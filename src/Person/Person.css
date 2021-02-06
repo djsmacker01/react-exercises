@@ -1,0 +1,19 @@
+
+body{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  min-width: 100vh;
+
+
+}
+.Person{
+  width: 100%;
+  text-align: center;
+  border: 2px solid rgb(90, 81, 79);
+  border-radius: 5px;
+  padding: 16px;
+  margin:16px;
+  box-shadow: 0 2px 3px black;
+
+}
