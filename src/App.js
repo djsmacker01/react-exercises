@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
+// import Radium,{StyleRoot} from 'radium';
 import Person from './Person/Person'
  
 
 class App extends Component{
   state = {
       persons: [
-        { name: 'success', age: 28 },
-        { name: 'debby', age: 25 },
-        { name: 'Deji', age: 26 },
+        { name: 'success', age: 28, id:'09' },
+        { name: 'debby', age: 25,id:'19' },
+        { name: 'Deji', age: 26,id:'79' },
      ],
      otherState:'some othe value',
      showPersons: false
@@ -31,16 +32,28 @@ class App extends Component{
     persons.splice( -1)
     this.setState({persons:persons})
   }
+
   
-  nameChangeHandler = (event) => {
-      
+  nameChangeHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id
+    });
+
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+    // Another approach is by using Object assign
+    //  const person = Object.assign({},this.state.persons[personIndex])
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+
+    persons[personIndex] = person
+
     this.setState({
-      persons: [
-        { name: 'deji', age: 22 },
-        { name: event.target.value, age: 34 },
-        { name: 'niyi', age: 29 },
-      
-      ]
+      persons: persons
+    
     });
   } 
     togglePersonHandler = () => {
@@ -58,21 +71,41 @@ class App extends Component{
       padding: '8px',
       border: 'none',
       cursor: 'pointer',
-      color: 'white'
+      color: 'white',
+      // ':hover': {
+      //   backgroundColor: 'lightgreen',
+      //   color: ' black'
+      // }
     };  
     let person = null;
     if (this.state.showPersons) {
       person = (
         <div>
-          {this.state.persons.map((person,index) => {
+          {this.state.persons.map((person, index) => {
             return <Person
-               click={()=>this.deletePersonHandler(index)}
+              click={() => this.deletePersonHandler(index)}
               name={person.name}
-              afe={ person.age}/>
-          }) }
+              age={person.age}
+              key={person.id}
+              change={(event) => this.nameChangeHandler(event, person.id)} />
+          })} 
       
         </div>
-      )
+      );
+      style.backgroundColor = 'green';
+      // style[':hover'] = {
+      //   backgroundColor: 'grey',
+      //   color:'black'
+      // }
+    }
+
+    // const classes = ['blue', 'bold'].join(' ');
+    const classes = [];
+    if (this.state.persons.length <=2) {
+      classes.push('blue');
+    }
+    if (this.state.persons.length <=1) {
+      classes.push('bold')
     }
       //  former statelss component
       //  <div>
@@ -86,22 +119,25 @@ class App extends Component{
       //     change={this.nameChangeHandler}>My Hobiess: Coding </Person>
       //   <Person
       //     name={this.state.persons[2].name}
-      //     age={this.state.persons[2].age} />git
+      //     age={this.state.persons[2].age} />
       //     </div>
     
     
-  return (
+    return (
+    
       <div className = "App" >
               <header className="App-header">
                 <h2>Welcome to react class</h2>
               </header>
-              <p className="App-intro">
+              <p className={classes.join(' ')}>React for beginner</p> 
         <button
-          style={style}
-          onClick={this.togglePersonHandler}>ToggleName</button>
+           style={style}
+           onClick={this.togglePersonHandler}>ToggleName
+       </button>
           {person}
-         </p>
-         </div>
+        
+        </div>
+  
     )
   }
 }
